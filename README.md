@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/paha/googleanalytics_exporter.svg?branch=master)](https://travis-ci.org/paha/googleanalytics_exporter)
 [![Go Report Card](https://goreportcard.com/badge/github.com/paha/googleanalytics_exporter)](https://goreportcard.com/report/github.com/paha/googleanalytics_exporter)
-[![Docker Repository on Quay](https://quay.io/repository/paha/ga-prom/status "Docker Repository on Quay")](https://quay.io/repository/paha/ga-prom)
+[![Docker Repository on Quay](https://quay.io/repository/paha/ga-prom/status 'Docker Repository on Quay')](https://quay.io/repository/paha/ga-prom)
 
 # Google Real Time Analytics to Prometheus
 
@@ -13,44 +13,43 @@ Obtains Google Analytics RealTime metrics, and presents them to prometheus for s
 1. Ensure [Glide][1] is installed.
 1. Copy your [Google creds][2] json file to ./config/ga_creds.json. The email from the json must be added to the GA project permissions, more on that bellow.
 1. Create yaml configuration file (`./config/config.yaml`):.
-    ```yaml
-    promport: 9100
-    interval: 60
-    viewid: ga:123456789
-    metrics:
-    - rt:pageviews
-    - rt:activeUsers
-    ```
+   ```yaml
+   promport: 9100
+   interval: 60
+   viewid: ga:123456789
+   metrics:
+     - rt:pageviews
+     - rt:activeUsers
+   ```
 1. Install dependencies, compile and run.
-    ```bash
-    glide install
-    go build ganalytics.go
-    ./ganalytics
-    ```
+   ```bash
+   glide install
+   go build ganalytics.go
+   ./ganalytics
+   ```
 
 ### ViewID for the Google Analytics
 
-From your Google Analytics Web UI: *Admin (Low left) ==> View Settings (far right tab, named VIEW)'*
+From your Google Analytics Web UI: _Admin (Low left) ==> View Settings (far right tab, named VIEW)'_
 
-*View ID* should be among *Basic Settings*. Prefix `ga:` must be added to the ID, e.g. `ga:1234556` while adding it to the config.
+_View ID_ should be among _Basic Settings_. Prefix `ga:` must be added to the ID, e.g. `ga:1234556` while adding it to the config.
 
 ### Google creds
 
-[Google API manager][2] allows to create OAuth 2.0 credentials for Google APIs. Use *Service account key* credentials type, upon creation a json creds file will be provided. Project RO permissions should be sufficient.
+[Google API manager][2] allows to create OAuth 2.0 credentials for Google APIs. Use _Service account key_ credentials type, upon creation a json creds file will be provided. Project RO permissions should be sufficient.
 
->*The email from GA API creds must be added to analytics project metrics will be obtained from.*>
-
+> _The email from GA API creds must be added to analytics project metrics will be obtained from._>
 
 ### Cross compile on a MAC
 
-* [Alpine docker image][3] is used for delivery.
-* go should be installed with common compilers - `brew install go --with-cc-common`
-* `creds.json` and `config.yaml` expected to be in `./config/`
+- [Alpine docker image][3] is used for delivery.
+- go should be installed with common compilers - `brew install go --with-cc-common`
+- `creds.json` and `config.yaml` expected to be in `./config/`
 
 ```bash
 CGO_ENABLED=0 GOOS=linux go build -ldflags "-s" -a -installsuffix cgo ganalytics.go
 docker build -t ganalytics .
-docker run -it -p 9100:9100 -v $(pwd)/config:/ga/config ganalytics
+docker run -it -p 9090:9090 -v $(pwd)/config:/ga/config ganalytics
 ```
 
 ## Author

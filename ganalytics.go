@@ -75,7 +75,10 @@ func main() {
 
 	// Expose the registered metrics via HTTP.
 	http.Handle("/metrics", promhttp.Handler())
-	go http.ListenAndServe(fmt.Sprintf(":%s", config.PromPort), nil)
+
+	addr := fmt.Sprintf("Listening on :%s", config.PromPort)
+	go http.ListenAndServe(addr, nil)
+	fmt.Println(addr)
 
 	for {
 		for _, metric := range config.Metrics {
@@ -99,7 +102,11 @@ func getMetric(rts *analytics.DataRealtimeService, metric string) string {
 		panic(err)
 	}
 
-	return m.Rows[0][0]
+	if len(m.Rows) > 0 {
+		return m.Rows[0][0]
+	}
+
+	return ""
 }
 
 // conf.getConf reads yaml configuration file
