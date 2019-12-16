@@ -76,7 +76,7 @@ func main() {
 	// Expose the registered metrics via HTTP.
 	http.Handle("/metrics", promhttp.Handler())
 
-	addr := fmt.Sprintf("Listening on :%s", config.PromPort)
+	addr := fmt.Sprintf(":%s", config.PromPort)
 	go http.ListenAndServe(addr, nil)
 	fmt.Println(addr)
 
